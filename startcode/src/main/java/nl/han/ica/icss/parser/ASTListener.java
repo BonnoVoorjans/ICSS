@@ -164,24 +164,16 @@ public class ASTListener extends ICSSBaseListener {
     @Override
     public void exitSubstractOperation(ICSSParser.SubstractOperationContext ctx) {
         Operation o = (Operation)currentContainer.pop();
-        System.out.println("LHS: "+ o.lhs);
-        System.out.println("RHS: " + o.rhs);
     }
 
     @Override
     public void exitMultiplyOperation(ICSSParser.MultiplyOperationContext ctx) {
         Operation o = (Operation)currentContainer.pop();
-        System.out.println("Multiply:");
-        System.out.println("LHS: "+ o.lhs);
-        System.out.println("RHS: " + o.rhs);
     }
 
     @Override
     public void exitAddOperation(ICSSParser.AddOperationContext ctx) {
         Operation o = (Operation)currentContainer.pop();
-        System.out.println("Add");
-        System.out.println("LHS: "+ o.lhs);
-        System.out.println("RHS: " + o.rhs);
     }
 
     @Override

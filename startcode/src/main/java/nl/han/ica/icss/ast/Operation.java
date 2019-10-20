@@ -26,4 +26,13 @@ public abstract class Operation extends Expression {
         }
         return this;
     }
+
+    public void removeLeftChild(){
+        lhs = null;
+    }
+
+    public void removeRightChild(){
+        rhs = null;
+
+    }
 }

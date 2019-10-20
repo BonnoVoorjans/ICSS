@@ -21,6 +21,7 @@ public class Stylerule extends ASTNode {
 	public String getNodeLabel() {
 		return "Stylerule";
 	}
+
 	@Override
 	public ArrayList<ASTNode> getChildren() {
 		ArrayList<ASTNode> children = new ArrayList<>();
@@ -28,6 +29,17 @@ public class Stylerule extends ASTNode {
 		children.addAll(body);
 
 		return children;
+	}
+
+	@Override
+	public ASTNode removeChild(ASTNode child) {
+    	if(child instanceof Selector){
+    		selectors.remove(child);
+		}
+		else{
+			body.remove(child);
+		}
+		return this;
 	}
 
     @Override

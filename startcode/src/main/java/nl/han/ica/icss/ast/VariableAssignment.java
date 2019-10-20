@@ -17,6 +17,15 @@ public class VariableAssignment extends ASTNode {
 		return "VariableAssignment (" + name.name + ")";
 	}
 
+
+	@Override
+	public ASTNode removeChild(ASTNode child) {
+		if(expression.equals(child)){
+			expression = null;
+		}
+		return this;
+	}
+
 	@Override
 	public ASTNode addChild(ASTNode child) {
 		if(name == null) {

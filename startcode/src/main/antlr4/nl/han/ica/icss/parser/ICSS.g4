@@ -45,15 +45,14 @@ stylesheet: (variableassignment|stylerule)* EOF;
 
 //--- Level 2 Meta: ---
 variableassignment:variablereference ASSIGNMENT_OPERATOR expression SEMICOLON;
-stylerule: selector OPEN_BRACE (declaration|if_statement)+ CLOSE_BRACE;
+stylerule: selector OPEN_BRACE (variableassignment|declaration|if_statement)+ CLOSE_BRACE;
 
 //--- Level 3 Meta: ---
 expression: literal #literalexpression|
             variablereference #varref|
             expression MUL expression #multiplyOperation|
-            expression PLUS expression #addOperation|
-            expression MIN expression #substractOperation;
-
+            expression MIN expression #substractOperation|
+            expression PLUS expression #addOperation;
 
 
 variablereference: CAPITAL_IDENT;

@@ -32,6 +32,7 @@ public class IfClause extends ASTNode {
 
     @Override
     public ASTNode addChild(ASTNode child) {
+
         if(child instanceof Expression)
             conditionalExpression  = (Expression) child;
         else
