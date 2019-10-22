@@ -23,6 +23,11 @@ public class ColorLiteral extends Literal {
         ColorLiteral that = (ColorLiteral) o;
         return Objects.equals(value, that.value);
     }
+
+    @Override
+    public String toString(){
+        return value;
+    }
     @Override
     public int hashCode() {
 

@@ -91,10 +91,6 @@ public class EvalExpressions implements Transform {
                 int resultValue = ((PixelLiteral) node.lhs).value - ((PixelLiteral) node.rhs).value;
                 PixelLiteral result = new PixelLiteral(resultValue);
                 return result;
-            } else if (node.lhs instanceof PixelLiteral) {
-                int resultValue = ((PercentageLiteral) node.lhs).value - ((PercentageLiteral) node.rhs).value;
-                PixelLiteral result = new PixelLiteral(resultValue);
-                return result;
             }
             else{
                 int resultValue = ((ScalarLiteral)node.lhs).value - ((ScalarLiteral)node.rhs).value;

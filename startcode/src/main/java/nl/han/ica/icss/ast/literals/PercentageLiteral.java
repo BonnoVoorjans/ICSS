@@ -27,6 +27,12 @@ public class PercentageLiteral extends Literal {
         return value == that.value;
     }
 
+
+    @Override
+    public String toString(){
+        return Integer.toString(value) + "%";
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(value);
