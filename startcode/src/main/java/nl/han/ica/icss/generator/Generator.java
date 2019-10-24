@@ -9,13 +9,13 @@ public class Generator {
     public String generate(AST ast) {
         StringBuilder string = new StringBuilder();
         for (ASTNode node : ast.root.getChildren()) {
-            string.append(traverseTree(node));
+            string.append(traverseTreeAndGenerateCSS(node));
 
         }
         return string.toString();
     }
 
-    public String traverseTree(ASTNode node) {
+    public String traverseTreeAndGenerateCSS(ASTNode node) {
         StringBuilder string = new StringBuilder();
 
         if (node instanceof Stylerule) {

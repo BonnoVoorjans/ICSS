@@ -54,7 +54,6 @@ expression: literal #literalexpression|
             expression MIN expression #substractOperation|
             expression PLUS expression #addOperation;
 
-
 variablereference: CAPITAL_IDENT;
 
 selector:   ID_IDENT #selectorId|
@@ -66,14 +65,10 @@ declaration:    propertyName COLON (expression+) SEMICOLON |
 if_statement: IF BOX_BRACKET_OPEN (variablereference|boolliteral) BOX_BRACKET_CLOSE OPEN_BRACE (declaration|if_statement)+ CLOSE_BRACE;
 
 ////--- Level 4 Meta: ---
-//operation:(addoperation | multiplyoperation | subtractoperation) | operation PLUS operation | operation MIN operation | operation MUL operation;
 literal: scalarliteral|pixelliteral|percentageliteral|colorliteral| boolliteral;
 propertyName: STYLE_ATTRIBUTES;
 
 ////--- Level 5 Meta ---
-//addoperation: literal PLUS literal | variablereference PLUS variablereference | variablereference PLUS literal | literal PLUS variablereference| literal PLUS addoperation | addoperation PLUS literal | addoperation PLUS variablereference;
-//multiplyoperation: literal MUL literal | variablereference MUL variablereference | variablereference MUL literal | literal MUL variablereference| literal MUL addoperation | addoperation MUL literal | addoperation MUL variablereference;
-//subtractoperation: literal MIN literal | variablereference MIN variablereference | variablereference MIN literal | literal MIN variablereference| literal MIN addoperation | addoperation MIN literal | addoperation MIN variablereference;
 
 
 //--- LITERALS: ---

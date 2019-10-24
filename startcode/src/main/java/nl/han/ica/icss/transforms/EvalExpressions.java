@@ -15,20 +15,29 @@ import java.util.LinkedList;
 public class EvalExpressions implements Transform {
 
     private LinkedList<HashMap<String, Literal>> variableValues;
+    private final int GLOBALSCOPE = 0;
+    private int currentScope;
 
     public EvalExpressions() {
+
         variableValues = new LinkedList<>();
         variableValues.add(new HashMap<String, Literal>());
     }
 
     @Override
     public void apply(AST ast) {
-        traverseThroughTree(ast.root);
+        currentScope = 0;
+        traverseThroughTreeAndApplyTransformation(ast.root);
     }
 
 
-    public void traverseThroughTree(ASTNode node) {
+    public void traverseThroughTreeAndApplyTransformation(ASTNode node) {
         for (ASTNode nodes : node.getChildren()) {
+            if(nodes instanceof Stylerule){
+                variableValues.add(new HashMap<String, Literal>());
+                ++currentScope;
+            }
+
             if (nodes instanceof VariableAssignment) {
                 if (((VariableAssignment) nodes).expression instanceof Operation) {
                     Literal resultOfOperation = calculateOperation((Operation) ((VariableAssignment) nodes).expression);
@@ -40,9 +49,13 @@ public class EvalExpressions implements Transform {
                 }
             }
             if(nodes instanceof VariableReference){
-                String key = ((VariableReference) nodes).name;
+                 String key = ((VariableReference) nodes).name;
                  node.removeChild(nodes);
-                 node.addChild(variableValues.get(0).get(key));
+                 if(variableValues.get(currentScope).containsKey(key)){
+                 node.addChild(variableValues.get(currentScope).get(key));}
+                 else{
+                     node.addChild(variableValues.get(GLOBALSCOPE).get(key));
+                 }
             }
 
             if (nodes instanceof Operation) {
@@ -50,7 +63,7 @@ public class EvalExpressions implements Transform {
                 node.removeChild(nodes);
                 node.addChild(resultOfOperation);
             } else {
-                traverseThroughTree(nodes);
+                traverseThroughTreeAndApplyTransformation(nodes);
             }
         }
     }
@@ -67,10 +80,6 @@ public class EvalExpressions implements Transform {
             }
             else if (node.lhs instanceof PixelLiteral) {
                 int resultValue = ((PixelLiteral) node.lhs).value + ((PixelLiteral) node.rhs).value;
-                PixelLiteral result = new PixelLiteral(resultValue);
-                return result;
-            } else if (node.lhs instanceof PixelLiteral) {
-                int resultValue = ((PercentageLiteral) node.lhs).value + ((PercentageLiteral) node.rhs).value;
                 PixelLiteral result = new PixelLiteral(resultValue);
                 return result;
             }
@@ -126,13 +135,23 @@ public class EvalExpressions implements Transform {
 
     private void replaceChildReferencesByLiteral(Operation node) {
         if (node.lhs instanceof VariableReference) {
-            Literal lit = variableValues.get(0).get(((VariableReference) node.lhs).name);
+            Literal lit;
+            if(variableValues.get(currentScope).containsKey(((VariableReference) node.lhs).name)){
+                 lit = variableValues.get(currentScope).get(((VariableReference) node.lhs).name);
+            }
+            else {
+                 lit = variableValues.get(GLOBALSCOPE).get(((VariableReference) node.lhs).name);
+            }
             node.removeLeftChild();
             node.addChild(lit);
         }
 
         if (node.rhs instanceof VariableReference) {
-            Literal lit = variableValues.get(0).get(((VariableReference) node.rhs).name);
+            Literal lit;
+            if(variableValues.get(currentScope).containsKey(((VariableReference) node.rhs).name)){
+                lit = variableValues.get(currentScope).get(((VariableReference) node.rhs).name);
+            }
+            lit = variableValues.get(GLOBALSCOPE).get(((VariableReference) node.rhs).name);
             node.removeRightChild();
             node.addChild(lit);
         }
